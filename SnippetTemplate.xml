@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>  <!-- 1 -->
+            <Title>Square Root</Title>
+            <Author>Ivan Herrera</Author>
+            <Description>Calculates the square root of 16.</Description>
+            <Shortcut>sqrt</Shortcut>
+            <HelpUrl></HelpUrl>
+            <Keywords>
+                <Keyword>KeyOneSpecify</Keyword>
+                <Keyword>KeyTwoSpecify</Keyword>
+            </Keywords>
+            <SnippetTypes>
+                <SnippetType>
+                    SurroundsWith|Expansion|Refactoring
+                </SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet> <!-- 2 -->
+            <References> <!-- 2.3 -->
+                <Reference>
+                    <Assembly>System.Data.dll</Assembly>
+                </Reference>
+            </References>
+            <Imports>
+                <Import>
+                    <Namespace>System.IO</Namespace>
+                </Import>
+            </Imports>  <!-- 2.1 -->
+            <Code Language="CSharp|VB|CPP|XAML|XML|JavaScript|TypeScript|SQL|HTML"  
+                Kind="method body|method decl|type decl|page|file|any"
+                        Delimiter="$ «delimitador de literales»)"><!-- 2.4 -->
+                <![CDATA[double root = Math.Sqrt($Number$);]]> 
+            </Code>
+            <!-- ... Other code ... -->
+            <Declarations> <!-- 2.2 -->
+                <Literal Editable="true|false">
+                    <ID>Number</ID>
+                    <ToolTip>Choose the number you want the square root of.</ToolTip>
+                    <Default>16</Default>
+                    <Function></Function> <!-- 2.2.2 -->
+                    <Object></Object>
+                </Literal> <!-- 2.2.1 -->
+                <Object> <!-- 2.2.1 -->
+                    <ID>example</ID>
+                    <Type>System.String</Type>
+                    <ToolTip>A tip you can show</ToolTip>
+                    <Default>default value</Default>
+                    <Function></Function> <!-- 2.2.2 -->
+                </Object>
+            </Declarations>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
