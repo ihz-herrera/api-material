@@ -13,13 +13,18 @@ namespace APIRest.Contextos
         public DbSet<Customer> Customers { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public Context(DbContextOptions options):base(options)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                //Todo: Recibir cadena de coneccion por parametro
-                optionsBuilder.UseSqlServer(@"Server=LAP-IVANH\MSSQLSERVER01; Initial Catalog=BDEntrenamiento; Trusted_Connection=True");
-            }
+
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        //Todo: Recibir cadena de coneccion por parametro
+        //        optionsBuilder.UseSqlServer(@"Server=LAP-IVANH\MSSQLSERVER01; Initial Catalog=BDEntrenamiento; Trusted_Connection=True");
+        //    }
+        //}
     }
 }

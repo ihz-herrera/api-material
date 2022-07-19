@@ -1,7 +1,9 @@
+using APIRest.Contextos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +28,11 @@ namespace APIRest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var cnnString = Configuration.GetConnectionString("MSSqlServer");
+            services.AddDbContext<Context>(optionsBuilder => optionsBuilder.UseSqlServer(cnnString));
+            services.AddScoped<Context>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

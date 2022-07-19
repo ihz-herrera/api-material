@@ -13,9 +13,9 @@ namespace APIRest.Controllers
     {
         private Context _context;
 
-        public CustomersController()
+        public CustomersController(Context context)
         {
-            _context = new Context();
+            _context = context;
         }
 
         
