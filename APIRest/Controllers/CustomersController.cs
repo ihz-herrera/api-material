@@ -1,6 +1,7 @@
 ﻿using APIRest.Contextos;
 using APIRest.Entidades;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +13,38 @@ namespace APIRest.Controllers
     public class CustomersController : ControllerBase
     {
         private Context _context;
+        private readonly ILogger<CustomersController> _logger;
+        
 
-        public CustomersController(Context context)
+        public CustomersController(Context context,ILogger<CustomersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         
         [HttpPost]
         public IActionResult SaveCustomer([FromBody]Customer  customer)
         {
-            //Todo: Control de errores
-            _context.Customers.Add(customer);
-            _context.SaveChanges();
+            try
+            {
+                _context.Customers.Add(customer);
+                _context.SaveChanges();
 
-            return Ok();
+                _logger.LogInformation("Cliente creado con éxito {id}", customer.CustomerId);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.Message);
+
+                return StatusCode(500,new { noRastreo = 100, 
+                    data= new { mensaje= "Error Interno del Servidor",customer 
+                    } });
+            }
+            
         }
 
 

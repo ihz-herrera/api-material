@@ -22,7 +22,7 @@ namespace APIRest.Contextos
         //{
         //    if (!optionsBuilder.IsConfigured)
         //    {
-        //        //Todo: Recibir cadena de coneccion por parametro
+        //        
         //        optionsBuilder.UseSqlServer(@"Server=LAP-IVANH\MSSQLSERVER01; Initial Catalog=BDEntrenamiento; Trusted_Connection=True");
         //    }
         //}
