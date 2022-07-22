@@ -34,6 +34,9 @@ namespace APIRest
             services.AddScoped<Context>();
 
 
+            
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

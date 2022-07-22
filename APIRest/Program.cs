@@ -14,12 +14,13 @@ namespace APIRest
     {
         public static void Main(string[] args)
         {
+            //Cargar configuracion de appsettings.json
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Warning()
-                .MinimumLevel.Override("Microsoft",Serilog.Events.LogEventLevel.Error)
-                .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Error)
-                .WriteTo.SQLite(@"D:\01.Entrenamiento\log\applog.db")
-                .WriteTo.Console()
+                .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
             try

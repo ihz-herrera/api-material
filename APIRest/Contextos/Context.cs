@@ -18,13 +18,6 @@ namespace APIRest.Contextos
 
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        
-        //        optionsBuilder.UseSqlServer(@"Server=LAP-IVANH\MSSQLSERVER01; Initial Catalog=BDEntrenamiento; Trusted_Connection=True");
-        //    }
-        //}
+        
     }
 }

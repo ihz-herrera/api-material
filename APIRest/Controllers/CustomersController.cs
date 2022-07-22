@@ -1,5 +1,6 @@
 ﻿using APIRest.Contextos;
 using APIRest.Entidades;
+using APIRest.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace APIRest.Controllers
 {
-    [Route("api/customer")]
+    [Route("api/")]
     public class CustomersController : ControllerBase
     {
         private Context _context;
@@ -20,10 +21,11 @@ namespace APIRest.Controllers
         {
             _context = context;
             _logger = logger;
+            
         }
 
         
-        [HttpPost]
+        [HttpPost("v1/customer")]
         public IActionResult SaveCustomer([FromBody]Customer  customer)
         {
             try
@@ -40,28 +42,73 @@ namespace APIRest.Controllers
 
                 _logger.LogError(ex.Message);
 
-                return StatusCode(500,new { noRastreo = 100, 
-                    data= new { mensaje= "Error Interno del Servidor",customer 
-                    } });
+                return StatusCode(500,new ErrorResponse(){ NoError = 100, 
+                    Message= "Error Interno del Servidor"});
+            }
+
+            try
+            {
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500,  "Error Interno del Servidor");
             }
             
         }
 
 
 
-        [HttpGet("{id}")]
+        [HttpGet("v2/customer/{id}")]
         public IActionResult QueryCustomerById([FromRoute]int id)
         {
-            var customersList=_context.Customers.Where(c=>c.CustomerId==id).ToList();
-            return Ok(customersList);
+
+            try
+            {
+                var customersList = _context.Customers.Where(c => c.CustomerId == id).ToList();
+                return Ok(customersList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Error Interno del Servidor");
+            }
         }
 
 
-        [HttpGet]
+        [HttpGet("v1/customer")]
         public IActionResult QueryCustomer()
         {
-            var customersList = _context.Customers.ToList();
-            return Ok(customersList);
+
+            try
+            {
+                var customersList = _context.Customers.ToList();
+                return Ok(customersList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Error Interno del Servidor");
+            }
+        }
+
+        [HttpGet("v2/customer")]
+        public IActionResult QueryCustomer_v2()
+        {
+
+            try
+            {
+
+                var customersList = _context.Customers.ToList();
+                return Ok(customersList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Error Interno del Servidor");
+            }
         }
 
 
