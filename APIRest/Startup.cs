@@ -1,4 +1,6 @@
 using APIRest.Contextos;
+using APIRest.Seguridad;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,8 +35,9 @@ namespace APIRest
             services.AddDbContext<Context>(optionsBuilder => optionsBuilder.UseSqlServer(cnnString));
             services.AddScoped<Context>();
 
-
-            
+            //Review: Configurar Autenticacion Basica
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthentication", null);
 
 
             services.AddControllers();
@@ -58,6 +61,7 @@ namespace APIRest
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

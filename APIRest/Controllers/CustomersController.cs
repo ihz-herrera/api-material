@@ -1,6 +1,7 @@
 ﻿using APIRest.Contextos;
 using APIRest.Entidades;
 using APIRest.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,6 +27,7 @@ namespace APIRest.Controllers
 
         
         [HttpPost("v1/customer")]
+        
         public IActionResult SaveCustomer([FromBody]Customer  customer)
         {
             try
@@ -79,6 +81,7 @@ namespace APIRest.Controllers
 
 
         [HttpGet("v1/customer")]
+        
         public IActionResult QueryCustomer()
         {
 
@@ -94,7 +97,8 @@ namespace APIRest.Controllers
             }
         }
 
-        [HttpGet("v2/customer")]
+        [HttpGet("v2/customers")]
+        [Authorize]
         public IActionResult QueryCustomer_v2()
         {
 
