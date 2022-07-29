@@ -27,7 +27,6 @@ namespace APIRest.Controllers
 
         
         [HttpPost("v1/customer")]
-        
         public IActionResult SaveCustomer([FromBody]Customer  customer)
         {
             try
@@ -81,7 +80,6 @@ namespace APIRest.Controllers
 
 
         [HttpGet("v1/customer")]
-        
         public IActionResult QueryCustomer()
         {
 
@@ -98,8 +96,26 @@ namespace APIRest.Controllers
         }
 
         [HttpGet("v2/customers")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "BasicAuthentication")]
         public IActionResult QueryCustomer_v2()
+        {
+
+            try
+            {
+
+                var customersList = _context.Customers.ToList();
+                return Ok(customersList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Error Interno del Servidor");
+            }
+        }
+
+        [HttpGet("v3/customers")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult QueryCustomer_v3()
         {
 
             try
