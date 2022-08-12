@@ -1,14 +1,17 @@
 using APIRest.Contextos;
 using APIRest.Seguridad;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -61,6 +64,37 @@ namespace APIRest
                     
                 };
             });
+
+            services.AddHealthChecks()
+                .AddCheck("App Running", 
+                ()=>
+                {
+                       return HealthCheckResult.Healthy("Api is working as expected");
+                })
+                .AddSqlServer(
+                    cnnString,
+                    healthQuery:"select 1",
+                    name:"SQL Server Running",
+                    failureStatus: HealthStatus.Unhealthy
+                )
+                .AddUrlGroup(
+                    new Uri("https://google.com"),
+                    name: "Internet Online",
+                    failureStatus: HealthStatus.Unhealthy
+                )
+                .AddUrlGroup(
+                    new Uri("https://bisoftguard.azurewebsites.net/.well-known/openid-configuration"),
+                    name: "Security Server Online",
+                    failureStatus: HealthStatus.Unhealthy
+                )
+                ;
+
+            services.AddHealthChecksUI(setup=>
+                {
+                    setup.MaximumHistoryEntriesPerEndpoint(2);
+                })
+                .AddInMemoryStorage();
+                
         
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -89,6 +123,15 @@ namespace APIRest
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecksUI(setupOptions: s =>
+                {
+                    s.AddCustomStylesheet("recursos/styles.css");
+                }
+                );
             });
         }
     }
