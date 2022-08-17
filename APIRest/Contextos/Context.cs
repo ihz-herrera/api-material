@@ -11,6 +11,8 @@ namespace APIRest.Contextos
     {
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Product> Products { get; set; }
+
 
 
         public Context(DbContextOptions options):base(options)

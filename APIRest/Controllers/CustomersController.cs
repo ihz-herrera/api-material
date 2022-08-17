@@ -1,6 +1,7 @@
 ﻿using APIRest.Contextos;
 using APIRest.Entidades;
 using APIRest.Helper;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,16 +13,20 @@ using System.Threading.Tasks;
 namespace APIRest.Controllers
 {
     [Route("api/")]
+    [ApiController]
+
     public class CustomersController : ControllerBase
     {
-        private Context _context;
+        private readonly Context _context;
         private readonly ILogger<CustomersController> _logger;
-        
+        //private readonly IValidator<Customer> _validator;
 
-        public CustomersController(Context context,ILogger<CustomersController> logger)
+        public CustomersController(Context context,ILogger<CustomersController> logger
+            )
         {
             _context = context;
             _logger = logger;
+            //_validator = validator;
             
         }
 
@@ -31,6 +36,15 @@ namespace APIRest.Controllers
         {
             try
             {
+
+                //var validationResult =  _validator.Validate(customer);
+                
+                //if(!validationResult.IsValid)
+                //{
+                //    return BadRequest(validationResult.Errors);
+                //}
+
+
                 _context.Customers.Add(customer);
                 _context.SaveChanges();
 

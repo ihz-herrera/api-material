@@ -1,5 +1,9 @@
 using APIRest.Contextos;
+using APIRest.Entidades;
 using APIRest.Seguridad;
+using APIRest.Validadores;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,6 +69,19 @@ namespace APIRest
                 };
             });
 
+            //Inyectar el validador
+            //services.AddScoped<IValidator<Customer>, CustomerValidator>();
+            //services.AddScoped<IValidator<Product>, ProductValidator>();
+
+            services.AddFluentValidation(opt=>
+                {
+                    opt.RegisterValidatorsFromAssemblyContaining<ProductValidator>();
+                }
+                
+                );
+
+
+
             services.AddHealthChecks()
                 .AddCheck("App Running", 
                 ()=>
@@ -89,11 +106,11 @@ namespace APIRest
                 )
                 ;
 
-            services.AddHealthChecksUI(setup=>
-                {
-                    setup.MaximumHistoryEntriesPerEndpoint(2);
-                })
-                .AddInMemoryStorage();
+            //services.AddHealthChecksUI(setup=>
+            //    {
+            //        setup.MaximumHistoryEntriesPerEndpoint(2);
+            //    })
+            //    .AddInMemoryStorage();
                 
         
             services.AddControllers();
@@ -127,11 +144,11 @@ namespace APIRest
                 {
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-                endpoints.MapHealthChecksUI(setupOptions: s =>
-                {
-                    s.AddCustomStylesheet("recursos/styles.css");
-                }
-                );
+                //endpoints.MapHealthChecksUI(setupOptions: s =>
+                //{
+                //    s.AddCustomStylesheet("recursos/styles.css");
+                //}
+                //);
             });
         }
     }
