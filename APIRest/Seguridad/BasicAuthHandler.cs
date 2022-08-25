@@ -19,7 +19,7 @@ namespace APIRest.Seguridad
             ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock )
             :base(options,logger, encoder, clock)
         {
-
+            
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()

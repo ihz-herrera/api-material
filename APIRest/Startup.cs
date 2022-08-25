@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -80,6 +81,10 @@ namespace APIRest
                 
                 );
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("BasicAuthentication", new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
+            });
 
 
             services.AddHealthChecks()
@@ -143,7 +148,7 @@ namespace APIRest
                 endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions
                 {
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+                }).RequireAuthorization("BasicAuthentication");
                 //endpoints.MapHealthChecksUI(setupOptions: s =>
                 //{
                 //    s.AddCustomStylesheet("recursos/styles.css");
